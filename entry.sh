@@ -10,7 +10,7 @@ mkdir -p /workspace
 cd /workspace
 
 echo "[INFO] Downloading entry script from: $URL"
-if ! wget -q -O entry.sh "$URL"; then
+if ! wget -q -O entry.sh $URL; then
   echo "[ERROR] wget failed for $URL"
   exit 1
 fi
