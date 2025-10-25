@@ -10,15 +10,20 @@ mkdir -p /workspace
 cd /workspace
 
 echo "[INFO] Downloading entry script from: $URL"
-if ! wget -q -O entry.sh $URL; then
-  echo "[ERROR] wget failed for $URL"
-  exit 1
-fi
+
+curl -L \
+  -H "Authorization: token $GH_PAT" \
+  -H "Accept: application/vnd.github.v3.raw" \
+  "https://api.github.com/repos/Alloterra/public/contents/entry.sh?ref=main" \
+  -o entry.sh
+
 
 echo "[INFO] Running entry.sh with current environment"
+chmod +x /workspace/entry.sh
+/workspace/entry.sh
 # Run directly with bash, no chmod needed, environment preserved
-env -i bash -c 'export -p; source /workspace/entry.sh' || {
-  echo "[ERROR] entry.sh failed with code $?"; exit 1; }
+#env -i bash -c 'export -p; source /workspace/entry.sh' || {
+#  echo "[ERROR] entry.sh failed with code $?"; exit 1; }
 
 echo "[INFO] entry.sh finished, waiting 300 seconds..."
 echo "[INFO] Script completed at $(date)"
